@@ -10,15 +10,12 @@ function LateReturns() {
       .then(data => {
         const today = new Date()
         today.setHours(0, 0, 0, 0)
-
-        // jinki endDate nikal gayi aur status abhi bhi Approved hai
         const late = data.filter(leave => {
           if (leave.status !== "Approved") return false
-          const endDate = new Date(leave.endDate)
-          endDate.setHours(0, 0, 0, 0)
-          return endDate < today
+          const end = new Date(leave.endDate)
+          end.setHours(0, 0, 0, 0)
+          return end < today
         })
-
         setLateStudents(late)
       })
       .catch(err => console.log(err))
@@ -27,106 +24,100 @@ function LateReturns() {
   const getDaysLate = (endDate) => {
     const today = new Date()
     const end = new Date(endDate)
-    const diff = Math.floor((today - end) / (1000 * 60 * 60 * 24))
-    return diff
+    return Math.floor((today - end) / (1000 * 60 * 60 * 24))
+  }
+
+  const markReturned = async (leaveId) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/leaves/return/${leaveId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      })
+      const data = await res.json()
+      if (data.message === "Return recorded") {
+        setLateStudents(prev => prev.filter(l => l._id !== leaveId))
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
     <WardenLayout>
-      <h1 style={{ fontSize: "26px", fontWeight: "800", color: "#f1f5f9", margin: "0 0 6px" }}>
+
+      <h1 style={{ fontSize: "22px", fontWeight: "800", color: "#1e293b", margin: "0 0 4px" }}>
         Late Returns ⏰
       </h1>
-      <p style={{ color: "#64748b", fontSize: "14px", margin: "0 0 28px" }}>
-        Students who haven't returned after their leave end date
+      <p style={{ color: "#94a3b8", fontSize: "13px", margin: "0 0 24px" }}>
+        Students who have not returned after their leave end date
       </p>
 
       {lateStudents.length === 0 && (
-        <div style={{
-          background: "#1e293b", border: "1px solid #334155",
-          borderRadius: "20px", padding: "48px", textAlign: "center"
-        }}>
-          <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎉</div>
-          <p style={{ color: "#64748b" }}>All students returned on time!</p>
+        <div style={{ background: "#fff", borderRadius: "16px", padding: "48px", textAlign: "center", border: "1px solid #f1f5f9" }}>
+          <p style={{ fontSize: "40px", margin: "0 0 10px" }}>🎉</p>
+          <p style={{ color: "#94a3b8" }}>All students returned on time!</p>
         </div>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {lateStudents.map((leave, i) => (
           <div key={i} style={{
-            background: "#1e293b",
-            border: "1px solid rgba(239,68,68,0.4)",
-            borderRadius: "16px",
-            padding: "20px 24px"
+            background: "#fff", borderRadius: "14px",
+            padding: "18px 22px",
+            border: "1px solid #fecaca"
           }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <div style={{
-                  width: "40px", height: "40px",
-                  background: "rgba(239,68,68,0.1)",
-                  borderRadius: "10px",
-                  display: "flex", alignItems: "center",
-                  justifyContent: "center", fontSize: "20px"
-                }}>⚠️</div>
-                <div>
-                  <p style={{ fontSize: "15px", fontWeight: "700", color: "#f1f5f9", margin: 0 }}>
-                    {leave.studentName || leave.studentId}
-                  </p>
-                  <p style={{ fontSize: "12px", color: "#475569", margin: 0 }}>
-                    ID: {leave.studentId}
-                  </p>
-                </div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "10px" }}>
+              <div>
+                <p style={{ fontSize: "15px", fontWeight: "700", color: "#1e293b", margin: "0 0 2px" }}>
+                  {leave.studentName || leave.studentId}
+                </p>
+                <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0 }}>
+                  ID: {leave.studentId}
+                </p>
               </div>
-              <div style={{
-                background: "rgba(239,68,68,0.1)",
-                border: "1px solid rgba(239,68,68,0.3)",
-                borderRadius: "100px", padding: "6px 14px",
-                flexShrink: 0
+              <span style={{
+                background: "#fef2f2", color: "#dc2626",
+                border: "1px solid #fecaca",
+                padding: "4px 12px", borderRadius: "100px",
+                fontSize: "12px", fontWeight: "700"
               }}>
-                <span style={{ fontSize: "12px", fontWeight: "700", color: "#f87171" }}>
-                  {getDaysLate(leave.endDate)} day{getDaysLate(leave.endDate) > 1 ? "s" : ""} late
-                </span>
-              </div>
+                {getDaysLate(leave.endDate)} day{getDaysLate(leave.endDate) > 1 ? "s" : ""} late
+              </span>
             </div>
 
-            <div style={{
-              background: "#0f172a",
-              borderRadius: "10px", padding: "12px 14px",
-              marginBottom: "14px"
-            }}>
-              <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 4px" }}>
-                📅 Was supposed to return by: <span style={{ color: "#f87171", fontWeight: "700" }}>{leave.endDate}</span>
+            <div style={{ background: "#f8fafc", borderRadius: "8px", padding: "10px 14px", marginBottom: "12px" }}>
+              <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 3px" }}>
+                📅 Should have returned by: <span style={{ color: "#dc2626", fontWeight: "700" }}>{leave.endDate}</span>
               </p>
               <p style={{ fontSize: "13px", color: "#64748b", margin: 0 }}>
-                📝 Reason was: {leave.reason}
+                📝 Reason: {leave.reason}
               </p>
             </div>
 
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: "flex", gap: "8px" }}>
               <button
-                style={{
-                  padding: "9px 18px",
-                  background: "rgba(99,102,241,0.15)",
-                  color: "#818cf8",
-                  border: "1px solid rgba(99,102,241,0.3)",
-                  borderRadius: "10px", fontSize: "13px",
-                  fontWeight: "700", cursor: "pointer",
-                  fontFamily: "'Nunito', sans-serif"
-                }}
                 onClick={() => alert(`Calling parent of ${leave.studentName || leave.studentId}...`)}
+                style={{
+                  padding: "8px 16px",
+                  background: "#eef2ff", color: "#6366f1",
+                  border: "1px solid #e0e7ff",
+                  borderRadius: "8px", fontSize: "13px",
+                  fontWeight: "700", cursor: "pointer",
+                  fontFamily: "Poppins, sans-serif"
+                }}
               >
                 📞 Call Parent
               </button>
               <button
+                onClick={() => markReturned(leave._id)}
                 style={{
-                  padding: "9px 18px",
-                  background: "rgba(34,197,94,0.1)",
-                  color: "#4ade80",
-                  border: "1px solid rgba(34,197,94,0.2)",
-                  borderRadius: "10px", fontSize: "13px",
+                  padding: "8px 16px",
+                  background: "#f0fdf4", color: "#16a34a",
+                  border: "1px solid #bbf7d0",
+                  borderRadius: "8px", fontSize: "13px",
                   fontWeight: "700", cursor: "pointer",
-                  fontFamily: "'Nunito', sans-serif"
+                  fontFamily: "Poppins, sans-serif"
                 }}
-                onClick={() => alert(`Marking ${leave.studentName || leave.studentId} as returned`)}
               >
                 ✓ Mark Returned
               </button>
@@ -134,6 +125,7 @@ function LateReturns() {
           </div>
         ))}
       </div>
+
     </WardenLayout>
   )
 }
