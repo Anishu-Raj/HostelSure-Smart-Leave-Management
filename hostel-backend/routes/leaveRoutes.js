@@ -12,7 +12,7 @@ router.post("/apply", async (req, res) => {
   }
 })
 
-// GET all — warden ke liye — PEHLE RAKHO
+
 router.get("/all", async (req, res) => {
   try {
     const leaves = await Leave.find().sort({ _id: -1 })
@@ -22,7 +22,6 @@ router.get("/all", async (req, res) => {
   }
 })
 
-// GET student ki leaves
 router.get("/:studentId", async (req, res) => {
   try {
     const leaves = await Leave.find({ studentId: req.params.studentId }).sort({ _id: -1 })
@@ -32,7 +31,7 @@ router.get("/:studentId", async (req, res) => {
   }
 })
 
-// Approve ya Reject
+
 router.put("/:id", async (req, res) => {
   try {
     const { status } = req.body
@@ -47,7 +46,7 @@ router.put("/:id", async (req, res) => {
   }
 })
 
-// Send OTP
+
 router.post("/send-otp/:id", async (req, res) => {
   try {
     const otp = Math.floor(1000 + Math.random() * 9000).toString()
@@ -58,7 +57,7 @@ router.post("/send-otp/:id", async (req, res) => {
   }
 })
 
-// Verify OTP
+
 router.post("/verify-otp/:id", async (req, res) => {
   try {
     const leave = await Leave.findById(req.params.id)
@@ -75,7 +74,7 @@ router.post("/verify-otp/:id", async (req, res) => {
   }
 })
 
-// Gate exit scan
+
 router.put("/exit/:id", async (req, res) => {
   try {
     const leave = await Leave.findByIdAndUpdate(
@@ -89,7 +88,7 @@ router.put("/exit/:id", async (req, res) => {
   }
 })
 
-// Student returned
+
 router.put("/return/:id", async (req, res) => {
   try {
     const leave = await Leave.findByIdAndUpdate(
@@ -103,7 +102,7 @@ router.put("/return/:id", async (req, res) => {
   }
 })
 
-// Student extend request — newEndDate bhi save karo
+
 router.put("/extend-request/:id", async (req, res) => {
   try {
     const leave = await Leave.findByIdAndUpdate(
@@ -121,7 +120,6 @@ router.put("/extend-request/:id", async (req, res) => {
   }
 })
 
-// Warden approve extension
 router.put("/extend-approve/:id", async (req, res) => {
   try {
     const leave = await Leave.findByIdAndUpdate(

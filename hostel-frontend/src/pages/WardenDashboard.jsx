@@ -12,7 +12,7 @@ function WardenDashboard() {
   const [parentResponse, setParentResponse] = useState(null)
   const [newEndDate, setNewEndDate] = useState("")
 
-  const FREQUENT_LIMIT = 3 // agar month mein 3 se zyada leaves hain to frequent
+  const FREQUENT_LIMIT = 3 
 
   useEffect(() => {
     fetchAll()
@@ -470,7 +470,7 @@ function WardenDashboard() {
           </div>
         )}
 
-        {/* Take Action */}
+
         {selected.status === "Pending" && !selected.extendRequested && (
           <div style={card()}>
             <p style={{ fontSize: "11px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 12px" }}>

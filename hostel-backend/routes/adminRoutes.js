@@ -13,8 +13,6 @@ async function sendSMS(to, body) {
   await client.messages.create({ from: process.env.TWILIO_FROM, to, body })
 }
 
-// POST /api/gate/scan — guard scans QR
-// Body: { leaveId, studentId, scanType: "exit" | "entry" }
 router.post("/scan", async (req, res) => {
   try {
     const { leaveId, studentId, scanType } = req.body
@@ -34,7 +32,6 @@ router.post("/scan", async (req, res) => {
       leave.exitTime = now
       await leave.save()
 
-      // Notify parent of exit
       const student = await Student.findOne({ studentId })
       if (student && student.parentMobile) {
         await sendSMS(student.parentMobile,
@@ -49,7 +46,6 @@ router.post("/scan", async (req, res) => {
       leave.returnTime = now
       await leave.save()
 
-      // Check late return
       const endDate = new Date(leave.endDate + "T23:59:00")
       const isLate = new Date(now) > endDate
       const student = await Student.findOne({ studentId })
@@ -71,14 +67,11 @@ router.post("/scan", async (req, res) => {
   }
 })
 
-// GET /api/gate/logs — all exits/entries for warden live view
 router.get("/logs", async (req, res) => {
   const logs = await Leave.find({ exitTime: { $exists: true } }).sort({ exitTime: -1 }).limit(50)
   res.json(logs)
 })
 
-// POST /api/gate/check-late-alerts — cron-style endpoint to send late return alerts
-// Call this from a scheduler or manually from warden dashboard
 router.post("/check-late-alerts", async (req, res) => {
   try {
     const now = new Date()

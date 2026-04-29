@@ -20,7 +20,7 @@ function StudentLayout({ children }) {
       background: "#f5f7ff",
       backgroundColor: "#f5f7ff",
     }}>
-      {/* Sidebar */}
+      
       <div style={{
         width: "252px",
         flexShrink: 0,
@@ -31,7 +31,7 @@ function StudentLayout({ children }) {
         flexDirection: "column",
         boxShadow: "2px 0 16px rgba(99,102,241,0.07)"
       }}>
-        {/* Logo */}
+        
         <div style={{ padding: "24px 20px 20px", borderBottom: "1px solid #f1f5f9" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
@@ -49,7 +49,7 @@ function StudentLayout({ children }) {
           </div>
         </div>
 
-        {/* Nav */}
+        
         <nav style={{ flex: 1, padding: "12px 10px" }}>
           {links.map((link, i) => {
             const active = location.pathname === link.path
@@ -83,7 +83,7 @@ function StudentLayout({ children }) {
           })}
         </nav>
 
-        {/* Logout */}
+        
         <div style={{ padding: "14px 10px", borderTop: "1px solid #f1f5f9" }}>
           <button
             onClick={() => { localStorage.clear(); navigate("/") }}
@@ -105,7 +105,7 @@ function StudentLayout({ children }) {
         </div>
       </div>
 
-      {/* Main content */}
+      
       <div style={{
         flex: 1, padding: "32px", overflowY: "auto",
         background: "#f5f7ff", backgroundColor: "#f5f7ff"

@@ -10,7 +10,6 @@ router.post("/login", async (req, res) => {
   const student = await Student.findOne({ studentId, password })
 
   if (student) {
-    // JWT token banao
     const token = jwt.sign(
       { studentId: student.studentId, name: student.name },
       process.env.JWT_SECRET,
@@ -21,11 +20,9 @@ router.post("/login", async (req, res) => {
     res.status(401).json({ success: false })
   }
 })
-// Yeh route add karo — admin ke liye saare students
 router.get("/all", async (req, res) => {
   try {
     const students = await Student.find({}, { password: 0 })
-    // password: 0 matlab password field mat bhejo
     res.json(students)
   } catch (err) {
     res.status(500).json({ message: "Server error" })

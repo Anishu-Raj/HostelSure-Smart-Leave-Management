@@ -18,7 +18,7 @@ function WardenLayout({ children }) {
       background: "#fffdf5",
       backgroundColor: "#fffdf5",
     }}>
-      {/* Sidebar */}
+    
       <div style={{
         width: "252px",
         flexShrink: 0,
@@ -29,7 +29,7 @@ function WardenLayout({ children }) {
         flexDirection: "column",
         boxShadow: "2px 0 16px rgba(245,158,11,0.07)"
       }}>
-        {/* Logo */}
+        
         <div style={{ padding: "24px 20px 20px", borderBottom: "1px solid #fffbeb" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div style={{
@@ -47,7 +47,7 @@ function WardenLayout({ children }) {
           </div>
         </div>
 
-        {/* Nav */}
+
         <nav style={{ flex: 1, padding: "12px 10px" }}>
           {links.map((link, i) => {
             const active = location.pathname === link.path
@@ -81,7 +81,7 @@ function WardenLayout({ children }) {
           })}
         </nav>
 
-        {/* Logout */}
+
         <div style={{ padding: "14px 10px", borderTop: "1px solid #fffbeb" }}>
           <button
             onClick={() => navigate("/")}
@@ -103,7 +103,7 @@ function WardenLayout({ children }) {
         </div>
       </div>
 
-      {/* Main content */}
+
       <div style={{
         flex: 1, padding: "32px", overflowY: "auto",
         background: "#fffdf5", backgroundColor: "#fffdf5"

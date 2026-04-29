@@ -18,8 +18,6 @@ app.use("/api/leaves",   leaveRoutes)
 app.use("/api/gate",     gateRoutes)
 app.use("/api/admin",    adminRoutes)
 
-// Parent confirmation link handler (no login needed)
-// e.g. GET /parent/confirm?token=xxx&action=confirm
 const Leave = require("./models/Leave")
 app.get("/parent/confirm", async (req, res) => {
   const { token, action } = req.query
@@ -33,10 +31,10 @@ app.get("/parent/confirm", async (req, res) => {
   }
   if (action === "confirm") {
     leave.parentStatus = "Confirmed"
-    leave.status = "ParentPending" // moves to warden queue
+    leave.status = "ParentPending"
   } else {
     leave.parentStatus = "Rejected"
-    leave.status = "Rejected"     // auto-reject
+    leave.status = "Rejected"     
   }
   await leave.save()
   const msg = action === "confirm"
