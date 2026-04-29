@@ -100,7 +100,7 @@ function StudentLayout({ children }) {
             onMouseEnter={e => { e.currentTarget.style.background = "#fee2e2" }}
             onMouseLeave={e => { e.currentTarget.style.background = "#fef2f2" }}
           >
-            👋 Logout
+             Logout
           </button>
         </div>
       </div>

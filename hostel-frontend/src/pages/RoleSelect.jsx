@@ -91,7 +91,7 @@ function RoleSelect() {
         </div>
 
         <p style={{ textAlign: "center", color: "rgba(255,255,255,0.5)", fontSize: "12px", marginTop: "24px" }}>
-          Web Wardens — FS-VI-T069
+          Web Wardens
         </p>
       </div>
     </div>

@@ -62,7 +62,6 @@ function WardenDashboard() {
     const data = await res.json()
     setStudentInfo(data)
 
-    // Student ki leave history fetch karo
     const leavesRes = await fetch(`http://localhost:5000/api/leaves/${leave.studentId}`)
     const leavesData = await leavesRes.json()
     setStudentLeaveHistory(leavesData)
@@ -162,8 +161,6 @@ function WardenDashboard() {
     const end = new Date(endDate)
     return Math.floor((today - end) / (1000 * 60 * 60 * 24))
   }
-
-  // card style helper
   const card = (extra = {}) => ({
     background: "#fff", borderRadius: "14px",
     padding: "18px 22px", marginBottom: "14px",
@@ -171,8 +168,6 @@ function WardenDashboard() {
     boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
     ...extra
   })
-
-  // ── DETAIL PAGE ────────────────────────────────
   if (selected) {
     const s = getStatusStyle(selected.status)
     const monthCount = getMonthlyLeaveCount(selected.studentId)
@@ -200,8 +195,6 @@ function WardenDashboard() {
         <p style={{ color: "#94a3b8", fontSize: "13px", margin: "0 0 22px" }}>
           Review all details carefully before taking action
         </p>
-
-        {/* Frequent leave warning — SABSE UPAR */}
         {frequent && (
           <div style={{
             background: "#fff7ed", border: "2px solid #fed7aa",
@@ -224,8 +217,6 @@ function WardenDashboard() {
             </div>
           </div>
         )}
-
-        {/* Student Info */}
         {studentInfo && (
           <div style={card()}>
             <p style={{ fontSize: "11px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 14px" }}>
@@ -246,8 +237,6 @@ function WardenDashboard() {
                 </div>
               ))}
             </div>
-
-            {/* Leave stats for this student */}
             <div style={{ marginTop: "14px", paddingTop: "14px", borderTop: "1px solid #f1f5f9", display: "flex", gap: "12px" }}>
               <div style={{
                 flex: 1, background: frequent ? "#fff7ed" : "#f0fdf4",
@@ -283,8 +272,6 @@ function WardenDashboard() {
             </div>
           </div>
         )}
-
-        {/* Leave Details */}
         <div style={card()}>
           <p style={{ fontSize: "11px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 14px" }}>
             Leave Details
@@ -302,8 +289,6 @@ function WardenDashboard() {
           <p style={{ fontSize: "11px", color: "#94a3b8", margin: "0 0 4px", fontWeight: "600", textTransform: "uppercase" }}>Reason</p>
           <p style={{ fontSize: "14px", color: "#1e293b", margin: 0 }}>{selected.reason}</p>
         </div>
-
-        {/* Extension Request */}
         {selected.extendRequested && selected.status !== "Rejected" && (
           <div style={{ ...card(), border: "2px solid #ddd6fe", background: "#faf5ff" }}>
             <p style={{ fontSize: "11px", fontWeight: "700", color: "#7c3aed", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 10px" }}>
@@ -365,7 +350,6 @@ function WardenDashboard() {
           </div>
         )}
 
-        {/* Parent Verification */}
         {studentInfo && selected.status === "Pending" && !selected.extendRequested && (
           <div style={card()}>
             <p style={{ fontSize: "11px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "1px", margin: "0 0 14px" }}>
@@ -558,8 +542,6 @@ function WardenDashboard() {
       </WardenLayout>
     )
   }
-
-  // ── MAIN LIST ─────────────────────────────────
   return (
     <WardenLayout>
       <h1 style={{ fontSize: "22px", fontWeight: "800", color: "#1e293b", margin: "0 0 4px" }}>
@@ -569,7 +551,6 @@ function WardenDashboard() {
         {pending.length} pending · {requests.length} total
       </p>
 
-      {/* Stats */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" }}>
         {[
           { label: "Total", value: requests.length, color: "#6366f1", bg: "#eef2ff" },
@@ -584,7 +565,6 @@ function WardenDashboard() {
         ))}
       </div>
 
-      {/* Late return alert */}
       {lateStudents.length > 0 && (
         <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "12px", padding: "14px 18px", marginBottom: "18px" }}>
           <p style={{ fontSize: "14px", fontWeight: "700", color: "#dc2626", margin: "0 0 6px" }}>
@@ -598,7 +578,6 @@ function WardenDashboard() {
         </div>
       )}
 
-      {/* Extension requests */}
       {extendReqs.length > 0 && (
         <div style={{ marginBottom: "18px" }}>
           <p style={{ fontSize: "12px", fontWeight: "700", color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.8px", margin: "0 0 10px" }}>
@@ -636,7 +615,6 @@ function WardenDashboard() {
         </div>
       )}
 
-      {/* Pending */}
       {pending.length > 0 && (
         <div style={{ marginBottom: "18px" }}>
           <p style={{ fontSize: "12px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.8px", margin: "0 0 10px" }}>
@@ -688,7 +666,6 @@ function WardenDashboard() {
         </div>
       )}
 
-      {/* Late students */}
       {lateStudents.length > 0 && (
         <div style={{ marginBottom: "18px" }}>
           <p style={{ fontSize: "12px", fontWeight: "700", color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.8px", margin: "0 0 10px" }}>
@@ -730,7 +707,6 @@ function WardenDashboard() {
         </div>
       )}
 
-      {/* Reviewed */}
       {reviewed.length > 0 && (
         <div>
           <p style={{ fontSize: "12px", fontWeight: "700", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.8px", margin: "0 0 10px" }}>
